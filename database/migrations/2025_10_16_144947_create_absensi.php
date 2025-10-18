@@ -12,12 +12,15 @@ return new class extends Migration {
     {
         Schema::create('absensi', function (Blueprint $table) {
             $table->id();
-            $table->enum('kehadiran', ['hadir', 'izin', 'sakit', 'alfa']);
-            $table->unsignedBigInteger('id_murid');
+            $table->unsignedBigInteger('id_kelas');
+            $table->unsignedBigInteger('id_guru')->nullable();
             $table->dateTime('tanggal');
             $table->timestamps();
 
-            $table->foreign('id_murid')->references('id')->on('murid')->onDelete('cascade');
+            $table->foreign('id_kelas')->references('id')->on('kelas')->onDelete('cascade');
+            $table->foreign('id_guru')->references('id')->on('guru')->onDelete('set null');
+
+            $table->index(['id_kelas', 'tanggal']);
         });
     }
 
