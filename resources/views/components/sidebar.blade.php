@@ -1,5 +1,6 @@
 @php
-    function isActive($routes) {
+    function isActive($routes)
+    {
         return request()->routeIs($routes) ? 'mdc-list-item--activated' : '';
     }
 @endphp
@@ -24,27 +25,37 @@
                         Dashboard
                     </a>
                 </div>
-                
+
                 <div class="mdc-list-item mdc-drawer-item">
                     <a class="mdc-expansion-panel-link" href="#" data-toggle="expansionPanel"
                         data-target="sample-page-submenu">
                         <i class="material-icons mdc-list-item__start-detail mdc-drawer-item-icon"
                             aria-hidden="true">pages</i>
-                        Sample Pages
+                        identitas
                         <i class="mdc-drawer-arrow material-icons">chevron_right</i>
                     </a>
                     <div class="mdc-expansion-panel" id="sample-page-submenu">
                         <nav class="mdc-list mdc-drawer-submenu">
                             <div class="mdc-list-item mdc-drawer-item">
-                                <a class="mdc-drawer-link" href="pages/samples/blank-page.html">
-                                    Blank Page
+                                <a class="mdc-drawer-link" href="{{ url('guru') }}">
+                                    guru
                                 </a>
                             </div>
-                            
+                            <div class="mdc-list-item mdc-drawer-item">
+                                <a class="mdc-drawer-link" href="{{ url('murid')}}">
+                                    murid
+                                </a>
+                            </div>
+                            <div class="mdc-list-item mdc-drawer-item">
+                                <a class="mdc-drawer-link" href="{{ url('user') }}">
+                                    user
+                                </a>
+                            </div>
+
                         </nav>
                     </div>
                 </div>
-                
+
             </nav>
         </div>
     </div>
