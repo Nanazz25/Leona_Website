@@ -29,8 +29,18 @@ class User extends Authenticatable
     ];
 
     /**
-     * Relasi ke model sesuai role_id
+     * Relasi dinamis ke model sesuai role
      */
+    public function roleable()
+    {
+        return match ($this->role) {
+            'guru', 'kurikulum' => $this->belongsTo(Guru::class, 'role_id'),
+            'murid' => $this->belongsTo(Murid::class, 'role_id'),
+            default => null,
+        };
+    }
+
+    // Kalau ingin akses cepat tanpa if-else di controller:
     public function guru()
     {
         return $this->belongsTo(Guru::class, 'role_id');

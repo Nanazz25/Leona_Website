@@ -1,7 +1,11 @@
 @extends('layouts.app')
 
+@section('title', 'Daftar Murid')
+
+@section('namaPage', 'Daftar Murid')
+
 @section('content')
-    <div class="max-w-6xl mx-auto mt-10 bg-white p-8 rounded-2xl shadow">
+    <div class="max-w-6xl mx-auto mt-0 bg-white p-8 rounded-2xl shadow">
         <h2 class="text-2xl font-bold text-center text-gray-700 mb-6">Data Murid</h2>
 
         @if (session('success'))
@@ -10,7 +14,7 @@
             </div>
         @endif
 
-        <div class="flex justify-end mb-5">
+        <div class="flex justify-end mb-3">
             <a href="{{ route('murid.create') }}"
                 class="bg-purple-600 hover:bg-purple-700 text-white font-semibold px-4 py-2 rounded-lg shadow-md transition duration-200">
                 + Tambahkan Data
@@ -38,7 +42,7 @@
                             <td class="py-3 px-4 border-b">{{ $m->nama }}</td>
                             <td class="py-3 px-4 border-b">{{ $m->nisn }}</td>
                             <td class="py-3 px-4 border-b">{{ $m->jenis_kelamin }}</td>
-                            <td class="py-3 px-4 border-b">{{ $m->kelas->nama ?? '-' }}</td>
+                            <td class="py-3 px-4 border-b">{{ $m->kelas->nama_kelas ?? '-' }}</td>
                             <td class="py-3 px-4 border-b">{{ $m->created_at->format('d M Y') }}</td>
                             <td class="py-3 px-4 border-b text-center">
                                 <div class="flex justify-center gap-2">

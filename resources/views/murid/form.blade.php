@@ -1,5 +1,9 @@
 @extends('layouts.app')
 
+@section('title', isset($murid) ? 'Edit Murid' : 'Tambah Murid')
+
+@section('namaPage', isset($murid) ? 'Edit Murid' : 'Tambah Murid')
+
 @section('content')
     <div class="max-w-lg mx-auto mt-12 bg-white p-8 rounded-2xl shadow">
         <h2 class="text-2xl font-bold text-center text-gray-700 mb-8">
@@ -59,7 +63,7 @@
                     <option value="">-- Pilih Kelas --</option>
                     @foreach($kelas as $k)
                         <option value="{{ $k->id }}" {{ old('id_kelas', $murid->id_kelas ?? '') == $k->id ? 'selected' : '' }}>
-                            {{ $k->nama }}
+                            {{ $k->nama_kelas }}
                         </option>
                     @endforeach
                 </select>
