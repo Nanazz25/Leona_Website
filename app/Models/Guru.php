@@ -19,7 +19,8 @@ class Guru extends Model
 
     public function user()
     {
-        return $this->hasOne(User::class, 'role_id');
+        return $this->hasOne(User::class, 'role_id')
+            ->where('role', 'guru');
     }
 
     public function mataPelajaran()

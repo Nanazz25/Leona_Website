@@ -20,9 +20,10 @@ class Murid extends Model
 
     public function user()
     {
-        return $this->hasOne(User::class, 'role_id');
+        return $this->hasOne(User::class, 'role_id')
+            ->where('role', 'murid');
     }
-
+    
     public function kelas()
     {
         return $this->belongsTo(Kelas::class, 'id_kelas');

@@ -1,5 +1,9 @@
 @extends('layouts.app')
 
+@section('title', isset($guru) ? 'Edit Guru' : 'Tambah Guru')
+
+@section('namaPage', isset($guru) ? 'Edit Guru' : 'Tambah Guru')
+
 @section('content')
     <div class="max-w-lg mx-auto mt-12 bg-white p-8 rounded-2xl shadow">
         <h2 class="text-2xl font-bold text-center text-gray-700 mb-8">
