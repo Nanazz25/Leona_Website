@@ -4,10 +4,10 @@
 <x-head>
     <x-slot:title>
         @yield('title')
-        </x-slot:titlex>
-        <x-slot:head>
-            @yield('head')
-        </x-slot:head>
+    </x-slot:title>
+    <x-slot:head>
+        @yield('head')
+    </x-slot:head>
 </x-head>
 <!-- end head -->
 
