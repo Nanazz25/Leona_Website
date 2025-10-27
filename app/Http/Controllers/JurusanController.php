@@ -12,16 +12,17 @@ class JurusanController extends Controller
      */
     public function index()
     {
-        $jurusans = Jurusan::all();
+        $jurusans = Jurusan::orderBy('created_at', 'desc')->paginate(10);
         return view('jurusan.index', compact('jurusans'));
     }
+
 
     /**
      * Tampilkan form tambah jurusan
      */
     public function create()
     {
-        return view('jurusan.create');
+        return view('jurusan.form');
     }
 
     /**
@@ -45,7 +46,7 @@ class JurusanController extends Controller
      */
     public function edit(Jurusan $jurusan)
     {
-        return view('jurusan.edit', compact('jurusan'));
+        return view('jurusan.form', compact('jurusan'));
     }
 
     /**
