@@ -17,8 +17,8 @@ return new class extends Migration {
             $table->dateTime('start_time');
             $table->dateTime('end_time');
             $table->unsignedBigInteger('created_by');
+            $table->boolean('is_archived')->default(false);
             $table->timestamps();
-
             $table->foreign('created_by')->references('id')->on('guru')->onDelete('cascade');
         });
     }

@@ -17,6 +17,7 @@ class Quiz extends Model
         'start_time',
         'end_time',
         'created_by',
+        'is_archived',
     ];
 
     public function guru()
