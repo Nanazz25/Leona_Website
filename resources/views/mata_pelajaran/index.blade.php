@@ -1,0 +1,69 @@
+@extends('layouts.app')
+@section('content')
+    <div class="p-6">
+
+        {{-- Header dan tombol tambah --}}
+        <div class="flex justify-between items-center mb-4">
+            <h1 class="text-2xl font-semibold text-gray-800">Daftar Mata Pelajaran</h1>
+            <a href="{{ route('mata_pelajaran.create') }}"
+                class="bg-purple-600 hover:bg-purple-700 text-white px-4 py-2 rounded-lg shadow transition">
+                Tambahkan Data
+            </a>
+        </div>
+
+        {{-- Pesan sukses --}}
+        @if(session('success'))
+            <div class="mb-4 bg-green-100 text-green-800 px-4 py-2 rounded-lg">
+                {{ session('success') }}
+            </div>
+        @endif
+
+        {{-- Tabel --}}
+        <div class="overflow-x-auto bg-white rounded-lg shadow">
+            <table class="min-w-full text-left text-gray-700">
+                <thead class="bg-purple-600 text-white">
+                    <tr>
+                        <th class="py-3 px-4">No</th>
+                        <th class="py-3 px-4">Nama Mata Pelajaran</th>
+                        <th class="py-3 px-4 text-center">Aksi</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    @forelse($mapel as $index => $m)
+                        <tr class="border-b hover:bg-gray-50 transition">
+                            <td class="py-3 px-4">{{ $mapel->firstItem() + $index }}</td>
+                            <td class="py-3 px-4">{{ $m->nama_pelajaran }}</td>
+                            <td class="py-3 px-4 text-center">
+                                <div class="flex justify-center gap-2">
+                                    <a href="{{ route('mata_pelajaran.edit', $m->id) }}"
+                                        class="bg-blue-500 hover:bg-blue-600 text-white px-3 py-1 rounded-full text-sm transition">
+                                        Edit
+                                    </a>
+                                    <form action="{{ route('mata_pelajaran.destroy', $m->id) }}" method="POST"
+                                        onsubmit="return confirm('Yakin ingin menghapus data ini?')">
+                                        @csrf
+                                        @method('DELETE')
+                                        <button type="submit"
+                                            class="bg-red-500 hover:bg-red-600 text-white px-3 py-1 rounded-full text-sm transition">
+                                            Hapus
+                                        </button>
+                                    </form>
+                                </div>
+                            </td>
+                        </tr>
+                    @empty
+                        <tr>
+                            <td colspan="3" class="text-center py-4 text-gray-500">Belum ada data mata pelajaran</td>
+                        </tr>
+                    @endforelse
+                </tbody>
+            </table>
+        </div>
+
+        {{-- Pagination --}}
+        <div class="mt-4">
+            {{ $mapel->links() }}
+        </div>
+
+    </div>
+@endsection

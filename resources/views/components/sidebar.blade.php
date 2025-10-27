@@ -28,34 +28,49 @@
 
                 <div class="mdc-list-item mdc-drawer-item">
                     <a class="mdc-expansion-panel-link" href="#" data-toggle="expansionPanel"
-                        data-target="sample-page-submenu">
+                        data-target="submenu-identitas">
                         <i class="material-icons mdc-list-item__start-detail mdc-drawer-item-icon"
                             aria-hidden="true">pages</i>
-                        identitas
+                        Identitas
                         <i class="mdc-drawer-arrow material-icons">chevron_right</i>
                     </a>
-                    <div class="mdc-expansion-panel" id="sample-page-submenu">
+                    <div class="mdc-expansion-panel" id="submenu-identitas">
                         <nav class="mdc-list mdc-drawer-submenu">
                             <div class="mdc-list-item mdc-drawer-item">
-                                <a class="mdc-drawer-link" href="{{ url('guru') }}">
-                                    guru
-                                </a>
+                                <a class="mdc-drawer-link" href="{{ url('guru') }}">Guru</a>
                             </div>
                             <div class="mdc-list-item mdc-drawer-item">
-                                <a class="mdc-drawer-link" href="{{ url('murid')}}">
-                                    murid
-                                </a>
+                                <a class="mdc-drawer-link" href="{{ url('murid') }}">Murid</a>
                             </div>
                             <div class="mdc-list-item mdc-drawer-item">
-                                <a class="mdc-drawer-link" href="{{ url('user') }}">
-                                    user
-                                </a>
+                                <a class="mdc-drawer-link" href="{{ url('user') }}">User</a>
                             </div>
-
                         </nav>
                     </div>
                 </div>
 
+                <div class="mdc-list-item mdc-drawer-item">
+                    <a class="mdc-expansion-panel-link" href="#" data-toggle="expansionPanel"
+                        data-target="submenu-identitas-kelas">
+                        <i class="material-icons mdc-list-item__start-detail mdc-drawer-item-icon"
+                            aria-hidden="true">pages</i>
+                        Identitas Kelas
+                        <i class="mdc-drawer-arrow material-icons">chevron_right</i>
+                    </a>
+                    <div class="mdc-expansion-panel" id="submenu-identitas-kelas">
+                        <nav class="mdc-list mdc-drawer-submenu">
+                            <div class="mdc-list-item mdc-drawer-item">
+                                <a class="mdc-drawer-link" href="{{ url('jurusan') }}">Jurusan</a>
+                            </div>
+                            <div class="mdc-list-item mdc-drawer-item">
+                                <a class="mdc-drawer-link" href="{{ url('kelas') }}">Kelas</a>
+                            </div>
+                            <div class="mdc-list-item mdc-drawer-item">
+                                <a class="mdc-drawer-link" href="{{ url('mata_pelajaran') }}">Mata Pelajaran</a>
+                            </div>
+                        </nav>
+                    </div>
+                </div>
             </nav>
         </div>
     </div>
