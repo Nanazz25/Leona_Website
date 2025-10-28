@@ -1,8 +1,12 @@
 @extends('layouts.app')
+
+@section('title', 'Daftar Mata Pelajaran')
+
+@section('namePage', 'Daftar Mata Pelajaran')
+
 @section('content')
     <div class="p-6">
 
-        {{-- Header dan tombol tambah --}}
         <div class="flex justify-between items-center mb-4">
             <h1 class="text-2xl font-semibold text-gray-800">Daftar Mata Pelajaran</h1>
             <a href="{{ route('mata_pelajaran.create') }}"
@@ -11,14 +15,12 @@
             </a>
         </div>
 
-        {{-- Pesan sukses --}}
-        @if(session('success'))
+        @if (session('success'))
             <div class="mb-4 bg-green-100 text-green-800 px-4 py-2 rounded-lg">
                 {{ session('success') }}
             </div>
         @endif
 
-        {{-- Tabel --}}
         <div class="overflow-x-auto bg-white rounded-lg shadow">
             <table class="min-w-full text-left text-gray-700">
                 <thead class="bg-purple-600 text-white">
@@ -60,7 +62,6 @@
             </table>
         </div>
 
-        {{-- Pagination --}}
         <div class="mt-4">
             {{ $mapel->links() }}
         </div>
