@@ -1,4 +1,9 @@
 @extends('layouts.app')
+
+@section('title', isset($jurusan) ? 'Edit Jurusan' : 'Tambah Jurusan')
+
+@section('namePage', isset($jurusan) ? 'Edit Jurusan' : 'Tambah Jurusan')
+
 @section('content')
     <div class="p-6 max-w-xl mx-auto">
 
@@ -6,7 +11,6 @@
             {{ isset($jurusan) ? 'Edit Jurusan' : 'Tambah Jurusan' }}
         </h1>
 
-        {{-- Form --}}
         <form action="{{ isset($jurusan) ? route('jurusan.update', $jurusan->id) : route('jurusan.store') }}" method="POST"
             class="bg-white shadow-md rounded-lg p-6 space-y-4">
             @csrf

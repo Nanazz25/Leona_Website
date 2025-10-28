@@ -1,4 +1,9 @@
 @extends('layouts.app')
+
+@section('title', isset($mata_pelajaran) ? 'Edit Mata Pelajaran' : 'Tambah Mata Pelajaran')
+
+@section('namePage', isset($mata_pelajaran) ? 'Edit Mata Pelajaran' : 'Tambah Mata Pelajaran')
+
 @section('content')
     <div class="p-6 max-w-xl mx-auto">
 
@@ -14,7 +19,6 @@
                 @method('PUT')
             @endif
 
-            {{-- Nama Mata Pelajaran --}}
             <div>
                 <label class="block text-gray-700 mb-1">Nama Mata Pelajaran</label>
                 <input type="text" name="nama_pelajaran"

@@ -1,4 +1,9 @@
 @extends('layouts.app')
+
+@section('title', 'Daftar Kelas')
+
+@section('namePage', 'Daftar Kelas')
+
 @section('content')
     <div class="p-6">
 

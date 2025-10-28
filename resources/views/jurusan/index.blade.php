@@ -1,8 +1,12 @@
 @extends('layouts.app')
+
+@section('title', 'Daftar Jurusan')
+
+@section('namePage', 'Daftar Jurusan')
+
 @section('content')
     <div class="p-6">
 
-        {{-- Tombol Tambah --}}
         <div class="flex justify-between items-center mb-4">
             <h1 class="text-2xl font-semibold text-gray-800">Daftar Jurusan</h1>
             <a href="{{ route('jurusan.create') }}"
@@ -11,14 +15,12 @@
             </a>
         </div>
 
-        {{-- Pesan Sukses --}}
         @if(session('success'))
             <div class="mb-4 bg-green-100 text-green-800 px-4 py-2 rounded-lg">
                 {{ session('success') }}
             </div>
         @endif
 
-        {{-- Tabel Data --}}
         <div class="overflow-x-auto bg-white rounded-lg shadow">
             <table class="min-w-full text-left text-gray-700">
                 <thead class="bg-purple-600 text-white">
@@ -60,7 +62,6 @@
             </table>
         </div>
 
-        {{-- Pagination --}}
         <div class="mt-4">
             {{ $jurusans->links() }}
         </div>
