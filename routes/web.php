@@ -33,3 +33,4 @@ Route::get('/kelas/count', function (Request $request) {
 });
 Route::resource('kelas', KelasController::class);
 Route::resource('mata_pelajaran', MataPelajaranController::class);
+Route::get('/kelas/search', [KelasController::class, 'search'])->name('kelas.search');

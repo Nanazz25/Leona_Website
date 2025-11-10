@@ -81,4 +81,22 @@ class KelasController extends Controller
         $kela->delete();
         return redirect()->route('kelas.index')->with('success', 'Kelas berhasil dihapus.');
     }
+    public function search(Request $request)
+    {
+        $query = $request->get('q', '');
+        $kelas = Kelas::with('jurusan')
+            ->where('nama_kelas', 'like', "%{$query}%")
+            ->orWhereHas('jurusan', fn($q) => $q->where('nama_jurusan', 'like', "%{$query}%"))
+            ->limit(10)
+            ->get();
+
+        $results = $kelas->map(function ($item) {
+            return [
+                'id' => $item->id,
+                'nama_kelas' => "{$item->tingkat_kelas} {$item->jurusan->nama_jurusan} {$item->nama_kelas}",
+            ];
+        });
+
+        return response()->json($results);
+    }
 }
