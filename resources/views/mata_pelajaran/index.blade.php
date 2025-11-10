@@ -27,6 +27,7 @@
                     <tr>
                         <th class="py-3 px-4">No</th>
                         <th class="py-3 px-4">Nama Mata Pelajaran</th>
+                        <th class="py-3 px-4">Kelas</th>
                         <th class="py-3 px-4 text-center">Aksi</th>
                     </tr>
                 </thead>
@@ -34,7 +35,24 @@
                     @forelse($mapel as $index => $m)
                         <tr class="border-b hover:bg-gray-50 transition">
                             <td class="py-3 px-4">{{ $mapel->firstItem() + $index }}</td>
-                            <td class="py-3 px-4">{{ $m->nama_pelajaran }}</td>
+                            <td class="py-3 px-4 font-medium text-gray-800">{{ $m->nama_pelajaran }}</td>
+
+                            {{-- Kolom Kelas --}}
+                            <td class="py-3 px-4">
+                                @if($m->kelas && $m->kelas->count() > 0)
+                                    <div class="flex flex-wrap gap-1">
+                                        @foreach($m->kelas as $k)
+                                            <span class="bg-purple-600 text-white rounded-full px-3 py-1 text-xs font-semibold">
+                                                {{ $k->tingkat_kelas }} {{ $k->jurusan->nama_jurusan ?? '' }} {{ $k->nama_kelas }}
+                                            </span>
+                                        @endforeach
+                                    </div>
+                                @else
+                                    <span class="text-gray-400 text-sm">Belum ada kelas</span>
+                                @endif
+                            </td>
+
+                            {{-- Kolom Aksi --}}
                             <td class="py-3 px-4 text-center">
                                 <div class="flex justify-center gap-2">
                                     <a href="{{ route('mata_pelajaran.edit', $m->id) }}"
@@ -55,7 +73,7 @@
                         </tr>
                     @empty
                         <tr>
-                            <td colspan="3" class="text-center py-4 text-gray-500">Belum ada data mata pelajaran</td>
+                            <td colspan="4" class="text-center py-4 text-gray-500">Belum ada data mata pelajaran</td>
                         </tr>
                     @endforelse
                 </tbody>

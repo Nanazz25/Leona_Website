@@ -13,15 +13,20 @@ class UserController extends Controller
 {
     public function index()
     {
-        $users = User::with(['guru', 'murid'])->latest()->paginate(10);
-        return view('user.index', compact('users'));
+        // Pagination masing-masing per kategori
+        $guruUsers = User::with('guru')->where('role', 'guru')->latest()->paginate(10, ['*'], 'guru_page');
+        $kurikulumUsers = User::with('guru')->where('role', 'kurikulum')->latest()->paginate(10, ['*'], 'kurikulum_page');
+        $muridUsers = User::with('murid')->where('role', 'murid')->latest()->paginate(10, ['*'], 'murid_page');
+
+        return view('user.index', compact('guruUsers', 'kurikulumUsers', 'muridUsers'));
     }
+
 
     public function create()
     {
         $user = new User();
 
-        // Ambil semua id guru & murid yang sudah punya user (dipastikan integer)
+        // Ambil semua id guru & murid yang sudah punya user
         $usedGuruIds = User::whereIn('role', ['guru', 'kurikulum'])
             ->pluck('role_id')
             ->map(fn($id) => (int) $id)
@@ -46,7 +51,6 @@ class UserController extends Controller
         if (in_array($role, ['guru', 'kurikulum'])) {
             $usedGuruIds = User::whereIn('role', ['guru', 'kurikulum'])
                 ->pluck('role_id')
-                ->map(fn($id) => (int) $id)
                 ->toArray();
 
             $data = Guru::whereNotIn('id', $usedGuruIds)
@@ -55,7 +59,6 @@ class UserController extends Controller
         } elseif ($role === 'murid') {
             $usedMuridIds = User::where('role', 'murid')
                 ->pluck('role_id')
-                ->map(fn($id) => (int) $id)
                 ->toArray();
 
             $data = Murid::whereNotIn('id', $usedMuridIds)
@@ -111,7 +114,6 @@ class UserController extends Controller
             'guru' => 'GUR',
             'kurikulum' => 'KUR',
             'murid' => 'MUR',
-            default => null,
         };
 
         if (in_array($request->role, ['guru', 'kurikulum'])) {
@@ -127,9 +129,9 @@ class UserController extends Controller
         $username = "{$prefix}-{$namaDepan}{$kodeAkhir}";
 
         if (User::where('username', $username)->exists()) {
-            return back()
-                ->withErrors(['username' => '❌ User dengan username ini sudah ada.'])
-                ->withInput();
+            return back()->withErrors([
+                'username' => '❌ Username sudah digunakan.'
+            ])->withInput();
         }
 
         User::create([
@@ -149,13 +151,11 @@ class UserController extends Controller
         $usedGuruIds = User::whereIn('role', ['guru', 'kurikulum'])
             ->where('id', '!=', $id)
             ->pluck('role_id')
-            ->map(fn($id) => (int) $id)
             ->toArray();
 
         $usedMuridIds = User::where('role', 'murid')
             ->where('id', '!=', $id)
             ->pluck('role_id')
-            ->map(fn($id) => (int) $id)
             ->toArray();
 
         $gurus = Guru::whereNotIn('id', $usedGuruIds)->select('id', 'nama', 'nip')->get();
@@ -178,7 +178,6 @@ class UserController extends Controller
             'guru' => 'GUR',
             'kurikulum' => 'KUR',
             'murid' => 'MUR',
-            default => null,
         };
 
         if (in_array($request->role, ['guru', 'kurikulum'])) {
@@ -197,7 +196,9 @@ class UserController extends Controller
             'role' => $request->role,
             'role_id' => $request->role_id,
             'username' => $username,
-            'password' => $request->filled('password') ? Hash::make($request->password) : $user->password,
+            'password' => $request->filled('password')
+                ? Hash::make($request->password)
+                : $user->password,
         ]);
 
         return redirect()->route('user.index')->with('success', '✅ Data user berhasil diperbarui.');
