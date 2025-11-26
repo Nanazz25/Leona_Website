@@ -14,6 +14,54 @@
             </div>
         @endif
 
+        <div class="mb-6 bg-gray-50 p-4 rounded-lg border border-gray-200">
+            <form method="GET" action="{{ route('murid.index') }}" class="grid grid-cols-1 md:grid-cols-5 gap-4 items-end">
+                <!-- Search Name -->
+                <div class="col-span-1">
+                    <label for="search" class="block text-sm font-medium text-gray-700 mb-1">Cari Nama</label>
+                    <input type="text" name="search" value="{{ request('search') }}" placeholder="Nama murid..."
+                        class="w-full border-gray-300 rounded-md shadow-sm focus:border-purple-500 focus:ring focus:ring-purple-200 focus:ring-opacity-50 text-sm">
+                </div>
+
+                <!-- Filter Class -->
+                <div class="col-span-1">
+                    <label for="kelas_id" class="block text-sm font-medium text-gray-700 mb-1">Filter Kelas</label>
+                    <select name="kelas_id" class="w-full border-gray-300 rounded-md shadow-sm focus:border-purple-500 focus:ring focus:ring-purple-200 focus:ring-opacity-50 text-sm">
+                        <option value="">Semua Kelas</option>
+                        @foreach($kelas as $k)
+                            <option value="{{ $k->id }}" {{ request('kelas_id') == $k->id ? 'selected' : '' }}>
+                                {{ $k->nama_kelas }}
+                            </option>
+                        @endforeach
+                    </select>
+                </div>
+
+                <!-- Date Range Start -->
+                <div class="col-span-1">
+                    <label for="start_date" class="block text-sm font-medium text-gray-700 mb-1">Dari Tanggal</label>
+                    <input type="date" name="start_date" value="{{ request('start_date') }}"
+                        class="w-full border-gray-300 rounded-md shadow-sm focus:border-purple-500 focus:ring focus:ring-purple-200 focus:ring-opacity-50 text-sm">
+                </div>
+
+                <!-- Date Range End -->
+                <div class="col-span-1">
+                    <label for="end_date" class="block text-sm font-medium text-gray-700 mb-1">Sampai Tanggal</label>
+                    <input type="date" name="end_date" value="{{ request('end_date') }}"
+                        class="w-full border-gray-300 rounded-md shadow-sm focus:border-purple-500 focus:ring focus:ring-purple-200 focus:ring-opacity-50 text-sm">
+                </div>
+
+                <!-- Buttons -->
+                <div class="col-span-1 flex gap-2">
+                    <button type="submit" class="bg-purple-600 hover:bg-purple-700 text-white px-4 py-2 rounded-md text-sm font-medium shadow transition duration-200 w-full">
+                        Filter
+                    </button>
+                    <a href="{{ route('murid.index') }}" class="bg-gray-300 hover:bg-gray-400 text-gray-800 px-4 py-2 rounded-md text-sm font-medium shadow transition duration-200 w-full text-center">
+                        Reset
+                    </a>
+                </div>
+            </form>
+        </div>
+
         <div class="flex justify-end mb-3">
             <a href="{{ route('murid.create') }}"
                 class="bg-purple-600 hover:bg-purple-700 text-white font-semibold px-4 py-2 rounded-lg shadow-md transition duration-200">

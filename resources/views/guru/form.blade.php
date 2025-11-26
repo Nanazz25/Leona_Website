@@ -32,8 +32,9 @@
             <div>
                 <label for="nip" class="block text-gray-700 font-semibold mb-2">NIP</label>
                 <input type="text" id="nip" name="nip" value="{{ old('nip', $guru->nip ?? '') }}"
-                    class="w-full border-gray-300 rounded-lg shadow-sm focus:border-purple-500 focus:ring focus:ring-purple-200 focus:ring-opacity-50"
-                    required>
+                    class="w-full border-gray-300 rounded-lg shadow-sm focus:border-purple-500 focus:ring focus:ring-purple-200 focus:ring-opacity-50 bg-gray-100 cursor-not-allowed"
+                    readonly required>
+                <small class="text-gray-500">NIP otomatis digenerate sistem.</small>
                 @error('nip')
                     <p class="text-red-500 text-sm mt-1">{{ $message }}</p>
                 @enderror
@@ -68,4 +69,20 @@
             </div>
         </form>
     </div>
+@endsection
+
+@section('afterAppScripts')
+<script>
+    document.addEventListener('DOMContentLoaded', function() {
+        const nipInput = document.getElementById('nip');
+        if (!nipInput.value) {
+            // Generate 16 digit random number
+            let randomNip = '';
+            for (let i = 0; i < 16; i++) {
+                randomNip += Math.floor(Math.random() * 10);
+            }
+            nipInput.value = randomNip;
+        }
+    });
+</script>
 @endsection

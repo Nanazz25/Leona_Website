@@ -10,9 +10,24 @@ class GuruController extends Controller
     /**
      * Tampilkan semua data guru (10 per halaman, terbaru di atas)
      */
-    public function index()
+    /**
+     * Tampilkan semua data guru (10 per halaman, terbaru di atas)
+     */
+    public function index(Request $request)
     {
-        $guru = Guru::orderBy('created_at', 'desc')->paginate(10);
+        $query = Guru::orderBy('created_at', 'desc');
+
+        // Search by Name
+        if ($request->has('search') && $request->search != '') {
+            $query->where('nama', 'like', '%' . $request->search . '%');
+        }
+
+        // Filter by Date Range
+        if ($request->has('start_date') && $request->start_date != '' && $request->has('end_date') && $request->end_date != '') {
+            $query->whereBetween('created_at', [$request->start_date . ' 00:00:00', $request->end_date . ' 23:59:59']);
+        }
+
+        $guru = $query->paginate(10);
         return view('guru.index', compact('guru'));
     }
 

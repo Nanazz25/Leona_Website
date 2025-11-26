@@ -20,7 +20,7 @@ class Guru extends Model
     public function user()
     {
         return $this->hasOne(User::class, 'role_id')
-            ->where('role', 'guru');
+            ->whereIn('role', ['guru', 'kurikulum']);
     }
 
     public function mataPelajaran()

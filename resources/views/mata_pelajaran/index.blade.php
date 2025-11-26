@@ -28,6 +28,7 @@
                         <th class="py-3 px-4">No</th>
                         <th class="py-3 px-4">Nama Mata Pelajaran</th>
                         <th class="py-3 px-4">Kelas</th>
+                        <th class="py-3 px-4">Guru</th>
                         <th class="py-3 px-4 text-center">Aksi</th>
                     </tr>
                 </thead>
@@ -52,6 +53,21 @@
                                 @endif
                             </td>
 
+                            {{-- Kolom Guru --}}
+                            <td class="py-3 px-4">
+                                @if($m->guru && $m->guru->count() > 0)
+                                    <div class="flex flex-wrap gap-1">
+                                        @foreach($m->guru as $g)
+                                            <span class="bg-blue-500 text-white rounded-full px-3 py-1 text-xs font-semibold">
+                                                {{ $g->nama }}
+                                            </span>
+                                        @endforeach
+                                    </div>
+                                @else
+                                    <span class="text-gray-400 text-sm">Belum ada guru</span>
+                                @endif
+                            </td>
+
                             {{-- Kolom Aksi --}}
                             <td class="py-3 px-4 text-center">
                                 <div class="flex justify-center gap-2">
@@ -64,7 +80,7 @@
                                         @csrf
                                         @method('DELETE')
                                         <button type="submit"
-                                            class="bg-red-500 hover:bg-red-600 text-white px-3 py-1 rounded-full text-sm transition">
+                                             class="bg-red-500 hover:bg-red-600 text-white px-3 py-1 rounded-full text-sm transition">
                                             Hapus
                                         </button>
                                     </form>
@@ -73,7 +89,7 @@
                         </tr>
                     @empty
                         <tr>
-                            <td colspan="4" class="text-center py-4 text-gray-500">Belum ada data mata pelajaran</td>
+                            <td colspan="5" class="text-center py-4 text-gray-500">Belum ada data mata pelajaran</td>
                         </tr>
                     @endforelse
                 </tbody>

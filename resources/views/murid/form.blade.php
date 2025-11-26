@@ -32,8 +32,9 @@
             <div>
                 <label for="nisn" class="block text-gray-700 font-semibold mb-2">NISN</label>
                 <input type="text" id="nisn" name="nisn" value="{{ old('nisn', $murid->nisn ?? '') }}"
-                    class="w-full border-gray-300 rounded-lg shadow-sm focus:border-purple-500 focus:ring focus:ring-purple-200 focus:ring-opacity-50"
-                    required>
+                    class="w-full border-gray-300 rounded-lg shadow-sm focus:border-purple-500 focus:ring focus:ring-purple-200 focus:ring-opacity-50 bg-gray-100 cursor-not-allowed"
+                    readonly required>
+                <small class="text-gray-500">NISN otomatis digenerate sistem.</small>
                 @error('nisn')
                     <p class="text-red-500 text-sm mt-1">{{ $message }}</p>
                 @enderror
@@ -86,4 +87,20 @@
             </div>
         </form>
     </div>
+@endsection
+
+@section('afterAppScripts')
+<script>
+    document.addEventListener('DOMContentLoaded', function() {
+        const nisnInput = document.getElementById('nisn');
+        if (!nisnInput.value) {
+            // Generate 16 digit random number
+            let randomNisn = '';
+            for (let i = 0; i < 16; i++) {
+                randomNisn += Math.floor(Math.random() * 10);
+            }
+            nisnInput.value = randomNisn;
+        }
+    });
+</script>
 @endsection
