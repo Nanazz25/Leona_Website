@@ -46,6 +46,22 @@
                     @enderror
                 </div>
 
+                {{-- Guru Terkait --}}
+                <div>
+                    <label class="block text-gray-700 font-medium mb-2">Guru Terkait</label>
+                    <select id="guruSelect" name="guru[]" multiple
+                        class="w-full border-gray-300 rounded-xl p-2 focus:ring-2 focus:ring-purple-500 focus:outline-none">
+                        @foreach($guru as $g)
+                            <option value="{{ $g->id }}" @if(isset($mata_pelajaran_guru) && in_array($g->id, $mata_pelajaran_guru)) selected @endif>
+                                {{ $g->nama }} ({{ $g->nip ?? '-' }})
+                            </option>
+                        @endforeach
+                    </select>
+                    @error('guru')
+                        <p class="text-red-500 text-sm mt-1">{{ $message }}</p>
+                    @enderror
+                </div>
+
                 {{-- Tombol --}}
                 <div class="flex justify-between items-center pt-4">
                     <a href="{{ route('mata_pelajaran.index') }}"
@@ -104,45 +120,39 @@
 
     <script>
         document.addEventListener('DOMContentLoaded', function () {
-            // Inisialisasi TomSelect dengan konfigurasi tepat
-            const ts = new TomSelect("#kelasSelect", {
-                plugins: ['remove_button'],    // plugin bawaan untuk tombol x
+            // Konfigurasi umum TomSelect
+            const tomSelectConfig = {
+                plugins: ['remove_button'],
                 persist: false,
                 create: false,
                 maxItems: null,
-                hideSelected: true,            // sembunyikan pilihan yg terpilih dari dropdown
-                valueField: 'value',           // sesuai struktur DOM <option value="...">
+                hideSelected: true,
+                valueField: 'value',
                 labelField: 'text',
                 searchField: ['text'],
                 sortField: { field: 'text', direction: 'asc' },
-                placeholder: 'Pilih satu atau lebih kelas...',
                 closeAfterSelect: false,
                 render: {
                     option: function (data, escape) {
-                        // tampilkan opsi di dropdown
                         return '<div class="option">' + escape(data.text) + '</div>';
                     },
                     item: function (data, escape) {
-                        // tampilkan tag (TomSelect akan menambahkan <div class="item"> ... </div>)
-                        // sertakan <a class="remove"> sehingga plugin remove_button mengenalinya
                         return '<div>' + escape(data.text) + ' <a class="remove" tabindex="-1" title="Hapus">×</a></div>';
                     }
                 }
+            };
+
+            // Inisialisasi TomSelect untuk Kelas
+            new TomSelect("#kelasSelect", {
+                ...tomSelectConfig,
+                placeholder: 'Pilih satu atau lebih kelas...',
             });
 
-            // Jika kamu ingin behavior tambahan saat tag dihapus atau ditambahkan, pakai event berikut:
-            ts.on('item_add', function (value, $item) {
-                // item baru saja ditambahkan (nilai: value)
-                // hideSelected:true sudah menyembunyikannya otomatis
+            // Inisialisasi TomSelect untuk Guru
+            new TomSelect("#guruSelect", {
+                ...tomSelectConfig,
+                placeholder: 'Pilih satu atau lebih guru...',
             });
-
-            ts.on('item_remove', function (value) {
-                // item dihapus (otomatis akan kembali muncul di dropdown karena kita tidak menghapus option)
-                // tidak perlu addOption manual
-            });
-
-            // Pastikan tampilan item sudah update (khususnya saat mode edit dengan selected options)
-            ts.refreshItems();
         });
     </script>
 @endsection

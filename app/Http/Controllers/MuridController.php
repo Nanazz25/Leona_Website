@@ -11,10 +11,29 @@ class MuridController extends Controller
     /**
      * Tampilkan semua data murid (10 per halaman, terbaru di atas)
      */
-    public function index()
+    public function index(Request $request)
     {
-        $murid = Murid::with('kelas')->orderBy('created_at', 'desc')->paginate(10);
-        return view('murid.index', compact('murid'));
+        $query = Murid::with('kelas');
+
+        // Search by Name
+        if ($request->has('search') && $request->search != '') {
+            $query->where('nama', 'like', '%' . $request->search . '%');
+        }
+
+        // Filter by Class
+        if ($request->has('kelas_id') && $request->kelas_id != '') {
+            $query->where('id_kelas', $request->kelas_id);
+        }
+
+        // Filter by Date Range
+        if ($request->has('start_date') && $request->start_date != '' && $request->has('end_date') && $request->end_date != '') {
+            $query->whereBetween('created_at', [$request->start_date . ' 00:00:00', $request->end_date . ' 23:59:59']);
+        }
+
+        $murid = $query->orderBy('created_at', 'desc')->paginate(10);
+        $kelas = Kelas::all(); // For filter dropdown
+
+        return view('murid.index', compact('murid', 'kelas'));
     }
 
     /**
