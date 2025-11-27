@@ -18,10 +18,27 @@ Route::middleware('auth:sanctum')->group(function () {
 
     // USER INFO
     Route::post('/logout', [AuthController::class, 'logout']);
-    Route::get('/me', fn(Request $request) => response()->json($request->user()));
+    Route::get('/me', [App\Http\Controllers\Api\ProfileController::class, 'show']);
+    Route::post('/me/update', [App\Http\Controllers\Api\ProfileController::class, 'update']);
+
+    // REKAP NILAI (Bisa diakses Murid & Guru)
+    Route::get('/rekap-nilai', [App\Http\Controllers\Api\RekapNilaiController::class, 'index']);
+
+    // QUIZ (Shared: Index & Show)
+    Route::prefix('quiz')->group(function () {
+        Route::get('/', [QuizController::class, 'index']);
+        Route::get('/{id}', [QuizController::class, 'show']);
+    });
 
     // =============== GURU ONLY ===============
     Route::middleware(['role:guru,kurikulum'])->group(function () {
+
+        // Master Data (Bisa diakses Guru/Kurikulum untuk dropdown saat bikin soal/quiz)
+        Route::prefix('master')->group(function () {
+            Route::get('/kelas', [App\Http\Controllers\Api\MasterDataController::class, 'indexKelas']);
+            Route::get('/jurusan', [App\Http\Controllers\Api\MasterDataController::class, 'indexJurusan']);
+            Route::get('/mata-pelajaran', [App\Http\Controllers\Api\MasterDataController::class, 'indexMataPelajaran']);
+        });
 
         Route::apiResource('kategori-soal', KategoriSoalController::class);
         Route::apiResource('bank-soal', BankSoalController::class);
@@ -53,13 +70,10 @@ Route::middleware('auth:sanctum')->group(function () {
     // =============== MURID ONLY ===============
     Route::middleware('role:murid')->group(function () {
         Route::prefix('quiz')->group(function () {
-            Route::get('/', [QuizController::class, 'index']);
-            Route::get('/{id}', [QuizController::class, 'show']);
-
             Route::post('/{id}/jawaban', [JawabanQuizController::class, 'store']);
             Route::get('/{id}/jawaban', [JawabanQuizController::class, 'show']);
 
-            // Murid lihat nilai sendiri
+            // Murid lihat nilai sendiri (per quiz)
             Route::get('/{id}/nilai', [QuizNilaiController::class, 'show']);
         });
     });

@@ -15,6 +15,8 @@ class Guru extends Model
         'nama',
         'nip',
         'jenis_kelamin',
+        'alamat',
+        'poto',
     ];
 
     public function user()

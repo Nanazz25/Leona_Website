@@ -16,6 +16,8 @@ return new class extends Migration {
             $table->string('nisn')->unique();
             $table->enum('jenis_kelamin', ['Laki-laki', 'Perempuan']);
             $table->unsignedBigInteger('id_kelas');
+            $table->text('alamat')->nullable();
+            $table->string('poto')->nullable();
             $table->timestamps();
 
             $table->foreign('id_kelas')->references('id')->on('kelas')->onDelete('cascade');

@@ -23,8 +23,11 @@ class QuizController extends Controller
         $query = Quiz::with(['kelas', 'soal.bankSoal']);
 
         // === FILTER STATUS ARSIP ===
+        // === FILTER STATUS ARSIP ===
         if ($status === 'archived') {
             $query->where('is_archived', true);
+        } elseif ($status === 'all') {
+            // Tampilkan semua (aktif & arsip)
         } else {
             $query->where('is_archived', false);
         }
@@ -35,6 +38,11 @@ class QuizController extends Controller
             $query->whereHas('kelas.murid', function ($q) use ($user) {
                 $q->where('id', $user->role_id);
             });
+
+            // Tambahkan flag 'sudah_dikerjakan' (true/false)
+            $query->withExists(['nilai as sudah_dikerjakan' => function ($q) use ($user) {
+                $q->where('id_murid', $user->role_id);
+            }]);
 
             // kalau murid ingin lihat yang belum dikerjakan
             if ($status === 'belum_dikerjakan') {
