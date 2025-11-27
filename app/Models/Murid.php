@@ -16,6 +16,8 @@ class Murid extends Model
         'nisn',
         'jenis_kelamin',
         'id_kelas',
+        'alamat',
+        'poto',
     ];
 
     public function user()

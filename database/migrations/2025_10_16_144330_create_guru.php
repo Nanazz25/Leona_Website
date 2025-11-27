@@ -15,6 +15,8 @@ return new class extends Migration {
             $table->string('nama');
             $table->string('nip')->unique();
             $table->enum('jenis_kelamin', ['Laki-laki', 'Perempuan']);
+            $table->text('alamat')->nullable();
+            $table->string('poto')->nullable();
             $table->timestamps();
         });
     }
