@@ -4,75 +4,83 @@
 @section('namePage', isset($mata_pelajaran) ? 'Edit Mata Pelajaran' : 'Tambah Mata Pelajaran')
 
 @section('content')
-    <div class="min-h-screen flex flex-col items-center justify-center bg-gray-100 p-6">
-        <div class="bg-white shadow-lg rounded-2xl p-8 w-full max-w-xl">
-            <h1 class="text-3xl font-bold text-gray-800 mb-6 text-center">
-                {{ isset($mata_pelajaran) ? 'Edit Mata Pelajaran' : 'Tambah Mata Pelajaran' }}
-            </h1>
 
-            <form
-                action="{{ isset($mata_pelajaran) ? route('mata_pelajaran.update', $mata_pelajaran->id) : route('mata_pelajaran.store') }}"
-                method="POST" class="space-y-5">
-                @csrf
-                @if(isset($mata_pelajaran))
-                    @method('PUT')
-                @endif
+    <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 mt-8">
+        <div class="flex justify-center">
+            <div class="w-full md:w-2/3">
 
-                {{-- Nama Mata Pelajaran --}}
-                <div>
-                    <label class="block text-gray-700 font-medium mb-2">Nama Mata Pelajaran</label>
-                    <input type="text" name="nama_pelajaran"
-                        value="{{ old('nama_pelajaran', $mata_pelajaran->nama_pelajaran ?? '') }}"
-                        class="w-full border border-gray-300 rounded-xl px-4 py-2 focus:ring-2 focus:ring-purple-500 focus:border-purple-500 outline-none"
-                        placeholder="Masukkan nama mata pelajaran" required>
-                    @error('nama_pelajaran')
-                        <p class="text-red-500 text-sm mt-1">{{ $message }}</p>
-                    @enderror
+                <div class="bg-white overflow-hidden shadow-sm sm:rounded-lg">
+                    <div class="p-6 bg-white border-b border-gray-200">
+                        
+                        <div class="mb-6">
+                             <h4 class="text-xl font-bold text-gray-800">{{ isset($mata_pelajaran) ? 'Edit Mata Pelajaran' : 'Tambah Mata Pelajaran' }}</h4>
+                        </div>
+
+                        <form
+                            action="{{ isset($mata_pelajaran) ? route('mata_pelajaran.update', $mata_pelajaran->id) : route('mata_pelajaran.store') }}"
+                            method="POST">
+                            @csrf
+                            @if(isset($mata_pelajaran))
+                                @method('PUT')
+                            @endif
+
+                            {{-- Nama Mata Pelajaran --}}
+                            <div class="mb-6">
+                                <label class="block font-medium text-sm text-gray-700 mb-2">Nama Mata Pelajaran</label>
+                                <input type="text" name="nama_pelajaran"
+                                    value="{{ old('nama_pelajaran', $mata_pelajaran->nama_pelajaran ?? '') }}"
+                                    class="rounded-md shadow-sm border-gray-300 focus:border-indigo-300 focus:ring focus:ring-indigo-200 focus:ring-opacity-50 block w-full"
+                                    placeholder="Masukkan nama mata pelajaran" required>
+                                @error('nama_pelajaran')
+                                    <p class="text-red-500 text-xs italic mt-1">{{ $message }}</p>
+                                @enderror
+                            </div>
+
+                            {{-- Kelas Terkait --}}
+                            <div class="mb-6">
+                                <label class="block font-medium text-sm text-gray-700 mb-2">Kelas Terkait</label>
+                                <select id="kelasSelect" name="kelas[]" multiple
+                                    class="rounded-md shadow-sm border-gray-300 focus:border-indigo-300 focus:ring focus:ring-indigo-200 focus:ring-opacity-50 block w-full">
+                                    @foreach($kelas as $k)
+                                        <option value="{{ $k->id }}" @if(isset($mata_pelajaran_kelas) && in_array($k->id, $mata_pelajaran_kelas)) selected @endif>
+                                            {{ $k->tingkat_kelas }} {{ $k->jurusan->nama_jurusan ?? '' }} {{ $k->nama_kelas }}
+                                        </option>
+                                    @endforeach
+                                </select>
+                                @error('kelas')
+                                    <p class="text-red-500 text-xs italic mt-1">{{ $message }}</p>
+                                @enderror
+                            </div>
+
+                            {{-- Guru Terkait --}}
+                            <div class="mb-6">
+                                <label class="block font-medium text-sm text-gray-700 mb-2">Guru Terkait</label>
+                                <select id="guruSelect" name="guru[]" multiple
+                                    class="rounded-md shadow-sm border-gray-300 focus:border-indigo-300 focus:ring focus:ring-indigo-200 focus:ring-opacity-50 block w-full">
+                                    @foreach($guru as $g)
+                                        <option value="{{ $g->id }}" @if(isset($mata_pelajaran_guru) && in_array($g->id, $mata_pelajaran_guru)) selected @endif>
+                                            {{ $g->nama }} ({{ $g->nip ?? '-' }})
+                                        </option>
+                                    @endforeach
+                                </select>
+                                @error('guru')
+                                    <p class="text-red-500 text-xs italic mt-1">{{ $message }}</p>
+                                @enderror
+                            </div>
+
+                            {{-- Tombol --}}
+                            <div class="flex justify-between items-center mt-8 pt-4 border-t border-gray-100">
+                                <a href="{{ route('mata_pelajaran.index') }}" class="inline-flex items-center px-4 py-2 bg-white border border-gray-300 rounded-md font-semibold text-xs text-gray-700 uppercase tracking-widest shadow-sm hover:text-gray-500 focus:outline-none focus:border-blue-300 focus:shadow-outline-blue active:text-gray-800 active:bg-gray-50 transition ease-in-out duration-150">
+                                    Kembali
+                                </a>
+                                <button type="submit" class="inline-flex items-center px-4 py-2 bg-gray-800 border border-transparent rounded-md font-semibold text-xs text-white uppercase tracking-widest hover:bg-gray-700 active:bg-gray-900 focus:outline-none focus:border-gray-900 focus:ring ring-gray-300 disabled:opacity-25 transition ease-in-out duration-150">
+                                    {{ isset($mata_pelajaran) ? 'Perbarui' : 'Simpan' }}
+                                </button>
+                            </div>
+                        </form>
+                    </div>
                 </div>
-
-                {{-- Kelas Terkait --}}
-                <div>
-                    <label class="block text-gray-700 font-medium mb-2">Kelas Terkait</label>
-                    <select id="kelasSelect" name="kelas[]" multiple
-                        class="w-full border-gray-300 rounded-xl p-2 focus:ring-2 focus:ring-purple-500 focus:outline-none">
-                        @foreach($kelas as $k)
-                            <option value="{{ $k->id }}" @if(isset($mata_pelajaran_kelas) && in_array($k->id, $mata_pelajaran_kelas)) selected @endif>
-                                {{ $k->tingkat_kelas }} {{ $k->jurusan->nama_jurusan ?? '' }} {{ $k->nama_kelas }}
-                            </option>
-                        @endforeach
-                    </select>
-                    @error('kelas')
-                        <p class="text-red-500 text-sm mt-1">{{ $message }}</p>
-                    @enderror
-                </div>
-
-                {{-- Guru Terkait --}}
-                <div>
-                    <label class="block text-gray-700 font-medium mb-2">Guru Terkait</label>
-                    <select id="guruSelect" name="guru[]" multiple
-                        class="w-full border-gray-300 rounded-xl p-2 focus:ring-2 focus:ring-purple-500 focus:outline-none">
-                        @foreach($guru as $g)
-                            <option value="{{ $g->id }}" @if(isset($mata_pelajaran_guru) && in_array($g->id, $mata_pelajaran_guru)) selected @endif>
-                                {{ $g->nama }} ({{ $g->nip ?? '-' }})
-                            </option>
-                        @endforeach
-                    </select>
-                    @error('guru')
-                        <p class="text-red-500 text-sm mt-1">{{ $message }}</p>
-                    @enderror
-                </div>
-
-                {{-- Tombol --}}
-                <div class="flex justify-between items-center pt-4">
-                    <a href="{{ route('mata_pelajaran.index') }}"
-                        class="text-gray-600 hover:text-gray-800 font-medium transition">← Kembali</a>
-
-                    <button type="submit"
-                        class="bg-purple-600 hover:bg-purple-700 text-white font-semibold px-6 py-2 rounded-xl shadow transition">
-                        {{ isset($mata_pelajaran) ? 'Perbarui' : 'Simpan' }}
-                    </button>
-                </div>
-            </form>
+            </div>
         </div>
     </div>
 @endsection
@@ -83,38 +91,35 @@
     <script src="https://cdn.jsdelivr.net/npm/tom-select@2.3.1/dist/js/tom-select.complete.min.js"></script>
 
     <style>
-        /* Sedikit styling agar tag benar-benar bulat dan tombol x rapi */
+        /* Modern Indigo Styling for TomSelect */
+        .ts-control {
+            border-radius: 0.375rem; /* rounded-md */
+            border-color: #d1d5db; /* gray-300 */
+            box-shadow: 0 1px 2px 0 rgba(0, 0, 0, 0.05); /* shadow-sm */
+            padding-top: 0.5rem;
+            padding-bottom: 0.5rem;
+        }
+        .ts-control.focus {
+            border-color: #a5b4fc; /* indigo-300 */
+            box-shadow: 0 0 0 3px rgba(199, 210, 254, 0.5); /* ring-indigo-200 */
+        }
+        
         .ts-control .item {
-            background-color: #6b21a8;
-            /* purple-600 */
-            color: white;
+            background-color: #e0e7ff; /* indigo-100 */
+            color: #4338ca; /* indigo-700 */
             border-radius: 9999px;
-            /* rounded-full */
-            padding: 0.25rem 0.75rem;
-            margin-right: 0.25rem;
-            margin-bottom: 0.25rem;
-            display: inline-flex;
-            align-items: center;
+            padding: 2px 8px;
             font-size: 0.875rem;
-            /* text-sm */
-            line-height: 1;
+            font-weight: 500;
         }
 
         .ts-control .item .remove {
-            margin-left: 0.5rem;
-            color: rgba(255, 255, 255, 0.95);
-            font-weight: 700;
-            text-decoration: none;
-            cursor: pointer;
+            color: #4338ca; /* indigo-700 */
+            border-left: 1px solid #c7d2fe; /* indigo-200 */
         }
-
+        
         .ts-control .item .remove:hover {
-            color: rgba(255, 255, 255, 0.85);
-        }
-
-        /* make options look nicer */
-        .ts-dropdown .option {
-            padding: 0.5rem 0.75rem;
+            background-color: #c7d2fe; /* indigo-200 */
         }
     </style>
 
@@ -134,10 +139,10 @@
                 closeAfterSelect: false,
                 render: {
                     option: function (data, escape) {
-                        return '<div class="option">' + escape(data.text) + '</div>';
+                        return '<div class="px-3 py-2 hover:bg-indigo-50">' + escape(data.text) + '</div>';
                     },
                     item: function (data, escape) {
-                        return '<div>' + escape(data.text) + ' <a class="remove" tabindex="-1" title="Hapus">×</a></div>';
+                        return '<div>' + escape(data.text) + '</div>';
                     }
                 }
             };

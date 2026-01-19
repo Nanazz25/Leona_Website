@@ -1,4 +1,3 @@
-```
 @extends('layouts.app')
 
 @section('title', isset($user) ? 'Edit User Murid' : 'Tambah User Murid')
@@ -9,6 +8,13 @@
     <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 mt-8">
         <div class="flex justify-center">
             <div class="w-full md:w-2/3">
+
+                <div class="bg-white overflow-hidden shadow-sm sm:rounded-lg">
+                    <div class="p-6 bg-white border-b border-gray-200">
+
+                        <div class="mb-6">
+                             <h4 class="text-xl font-bold text-gray-800">{{ isset($user) ? 'Edit User Murid' : 'Tambah User Murid' }}</h4>
+                        </div>
 
                         <form method="POST"
                             action="{{ isset($user) ? route('usermurid.update', $user->id) : route('usermurid.store') }}">
@@ -72,7 +78,7 @@
                                 <label class="block font-medium text-sm text-gray-700 mb-2">Username (Auto-Generated)</label>
                                 <input type="text" class="bg-gray-100 border-gray-300 text-gray-500 rounded-md shadow-sm block w-full cursor-not-allowed" id="username-preview" readonly 
                                     value="{{ isset($user) ? $user->username : 'Akan muncul setelah memilih murid...' }}">
-                                <p class="mt-1 text-sm text-gray-500">Format: MUR-[NAMA]-[3 DIGIT TERAKHIR NISN]</p>
+                                <p class="text-xs text-gray-500 mt-1">Format: MUR-[NAMA]-[3 DIGIT TERAKHIR NISN]</p>
                             </div>
 
                             <div class="mb-6">
@@ -256,4 +262,3 @@
     });
 </script>
 @endsection
-```

@@ -1,91 +1,94 @@
 @extends('layouts.app')
 
 @section('title', isset($murid) ? 'Edit Murid' : 'Tambah Murid')
-
 @section('namaPage', isset($murid) ? 'Edit Murid' : 'Tambah Murid')
 
 @section('content')
-    <div class="max-w-lg mx-auto mt-12 bg-white p-8 rounded-2xl shadow">
-        <h2 class="text-2xl font-bold text-center text-gray-700 mb-8">
-            {{ isset($murid) ? 'Edit Data Murid' : 'Tambah Data Murid' }}
-        </h2>
 
-        <form action="{{ isset($murid) ? route('murid.update', $murid->id) : route('murid.store') }}" method="POST"
-            class="space-y-6">
-            @csrf
-            @if(isset($murid))
-                @method('PUT')
-            @endif
+    <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 mt-8">
+        <div class="flex justify-center">
+            <div class="w-full md:w-2/3">
 
-            <!-- Nama -->
-            <div>
-                <label for="nama" class="block text-gray-700 font-semibold mb-2">Nama Murid</label>
-                <input type="text" id="nama" name="nama" value="{{ old('nama', $murid->nama ?? '') }}"
-                    class="w-full border-gray-300 rounded-lg shadow-sm focus:border-purple-500 focus:ring focus:ring-purple-200 focus:ring-opacity-50"
-                    required>
-                @error('nama')
-                    <p class="text-red-500 text-sm mt-1">{{ $message }}</p>
-                @enderror
+                <div class="bg-white overflow-hidden shadow-sm sm:rounded-lg">
+                    <div class="p-6 bg-white border-b border-gray-200">
+                        
+                        <div class="mb-6">
+                             <h4 class="text-xl font-bold text-gray-800">{{ isset($murid) ? 'Edit Data Murid' : 'Tambah Data Murid' }}</h4>
+                             <p class="text-gray-500 text-sm mt-1">Silakan isi form berikut dengan data yang valid.</p>
+                        </div>
+
+                        <form method="POST" action="{{ isset($murid) ? route('murid.update', $murid->id) : route('murid.store') }}">
+                            @csrf
+                            @if(isset($murid))
+                                @method('PUT')
+                            @endif
+
+                            <div class="mb-6">
+                                <label for="nama" class="block font-medium text-sm text-gray-700 mb-2">Nama Murid</label>
+                                <input type="text" name="nama" id="nama" value="{{ old('nama', $murid->nama ?? '') }}"
+                                    class="rounded-md shadow-sm border-gray-300 focus:border-indigo-300 focus:ring focus:ring-indigo-200 focus:ring-opacity-50 block w-full"
+                                    required>
+                                @error('nama')
+                                    <p class="text-red-500 text-xs italic mt-1">{{ $message }}</p>
+                                @enderror
+                            </div>
+
+                            <div class="mb-6">
+                                <label for="nisn" class="block font-medium text-sm text-gray-700 mb-2">NISN</label>
+                                <input type="text" name="nisn" id="nisn" value="{{ old('nisn', $murid->nisn ?? '') }}"
+                                    class="rounded-md shadow-sm border-gray-300 bg-gray-100 cursor-not-allowed focus:border-indigo-300 focus:ring focus:ring-indigo-200 focus:ring-opacity-50 block w-full"
+                                    readonly required>
+                                <p class="text-gray-500 text-xs mt-1">NISN otomatis digenerate sistem.</p>
+                                @error('nisn')
+                                    <p class="text-red-500 text-xs italic mt-1">{{ $message }}</p>
+                                @enderror
+                            </div>
+
+                            <div class="mb-6">
+                                <label for="jenis_kelamin" class="block font-medium text-sm text-gray-700 mb-2">Jenis Kelamin</label>
+                                <select name="jenis_kelamin" id="jenis_kelamin"
+                                    class="rounded-md shadow-sm border-gray-300 focus:border-indigo-300 focus:ring focus:ring-indigo-200 focus:ring-opacity-50 block w-full"
+                                    required>
+                                    <option value="">-- Pilih --</option>
+                                    <option value="Laki-laki" {{ old('jenis_kelamin', $murid->jenis_kelamin ?? '') == 'Laki-laki' ? 'selected' : '' }}>Laki-laki</option>
+                                    <option value="Perempuan" {{ old('jenis_kelamin', $murid->jenis_kelamin ?? '') == 'Perempuan' ? 'selected' : '' }}>Perempuan</option>
+                                </select>
+                                @error('jenis_kelamin')
+                                    <p class="text-red-500 text-xs italic mt-1">{{ $message }}</p>
+                                @enderror
+                            </div>
+
+                            <div class="mb-6">
+                                <label for="id_kelas" class="block font-medium text-sm text-gray-700 mb-2">Kelas</label>
+                                <select name="id_kelas" id="id_kelas"
+                                    class="rounded-md shadow-sm border-gray-300 focus:border-indigo-300 focus:ring focus:ring-indigo-200 focus:ring-opacity-50 block w-full"
+                                    required>
+                                    <option value="">-- Pilih Kelas --</option>
+                                    @foreach($kelas as $k)
+                                        <option value="{{ $k->id }}" {{ old('id_kelas', $murid->id_kelas ?? '') == $k->id ? 'selected' : '' }}>
+                                            {{ $k->nama_kelas }}
+                                        </option>
+                                    @endforeach
+                                </select>
+                                @error('id_kelas')
+                                    <p class="text-red-500 text-xs italic mt-1">{{ $message }}</p>
+                                @enderror
+                            </div>
+
+                            <div class="flex justify-between items-center mt-8 pt-4 border-t border-gray-100">
+                                <a href="{{ route('murid.index') }}" class="inline-flex items-center px-4 py-2 bg-white border border-gray-300 rounded-md font-semibold text-xs text-gray-700 uppercase tracking-widest shadow-sm hover:text-gray-500 focus:outline-none focus:border-blue-300 focus:shadow-outline-blue active:text-gray-800 active:bg-gray-50 transition ease-in-out duration-150">
+                                    Kembali
+                                </a>
+                                <button type="submit" class="inline-flex items-center px-4 py-2 bg-gray-800 border border-transparent rounded-md font-semibold text-xs text-white uppercase tracking-widest hover:bg-gray-700 active:bg-gray-900 focus:outline-none focus:border-gray-900 focus:ring ring-gray-300 disabled:opacity-25 transition ease-in-out duration-150">
+                                    {{ isset($murid) ? 'Perbarui Data' : 'Simpan Data' }}
+                                </button>
+                            </div>
+                        </form>
+                    </div>
+                </div>
+
             </div>
-
-            <!-- NISN -->
-            <div>
-                <label for="nisn" class="block text-gray-700 font-semibold mb-2">NISN</label>
-                <input type="text" id="nisn" name="nisn" value="{{ old('nisn', $murid->nisn ?? '') }}"
-                    class="w-full border-gray-300 rounded-lg shadow-sm focus:border-purple-500 focus:ring focus:ring-purple-200 focus:ring-opacity-50 bg-gray-100 cursor-not-allowed"
-                    readonly required>
-                <small class="text-gray-500">NISN otomatis digenerate sistem.</small>
-                @error('nisn')
-                    <p class="text-red-500 text-sm mt-1">{{ $message }}</p>
-                @enderror
-            </div>
-
-            <!-- Jenis Kelamin -->
-            <div>
-                <label for="jenis_kelamin" class="block text-gray-700 font-semibold mb-2">Jenis Kelamin</label>
-                <select id="jenis_kelamin" name="jenis_kelamin"
-                    class="w-full border-gray-300 rounded-lg shadow-sm focus:border-purple-500 focus:ring focus:ring-purple-200 focus:ring-opacity-50"
-                    required>
-                    <option value="">-- Pilih --</option>
-                    <option value="Laki-laki" {{ old('jenis_kelamin', $murid->jenis_kelamin ?? '') == 'Laki-laki' ? 'selected' : '' }}>Laki-laki</option>
-                    <option value="Perempuan" {{ old('jenis_kelamin', $murid->jenis_kelamin ?? '') == 'Perempuan' ? 'selected' : '' }}>Perempuan</option>
-                </select>
-                @error('jenis_kelamin')
-                    <p class="text-red-500 text-sm mt-1">{{ $message }}</p>
-                @enderror
-            </div>
-
-            <!-- Kelas -->
-            <div>
-                <label for="id_kelas" class="block text-gray-700 font-semibold mb-2">Kelas</label>
-                <select id="id_kelas" name="id_kelas"
-                    class="w-full border-gray-300 rounded-lg shadow-sm focus:border-purple-500 focus:ring focus:ring-purple-200 focus:ring-opacity-50"
-                    required>
-                    <option value="">-- Pilih Kelas --</option>
-                    @foreach($kelas as $k)
-                        <option value="{{ $k->id }}" {{ old('id_kelas', $murid->id_kelas ?? '') == $k->id ? 'selected' : '' }}>
-                            {{ $k->nama_kelas }}
-                        </option>
-                    @endforeach
-                </select>
-                @error('id_kelas')
-                    <p class="text-red-500 text-sm mt-1">{{ $message }}</p>
-                @enderror
-            </div>
-
-            <!-- Tombol -->
-            <div class="flex justify-between items-center pt-4">
-                <button type="submit"
-                    class="bg-purple-600 hover:bg-purple-700 text-white px-5 py-2 rounded-lg font-semibold shadow transition duration-200">
-                    {{ isset($murid) ? 'Perbarui Data' : 'Simpan Data' }}
-                </button>
-
-                <a href="{{ route('murid.index') }}"
-                    class="bg-gray-500 hover:bg-gray-600 text-white px-5 py-2 rounded-lg font-semibold shadow transition duration-200">
-                    Kembali
-                </a>
-            </div>
-        </form>
+        </div>
     </div>
 @endsection
 
